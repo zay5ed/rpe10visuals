@@ -4,6 +4,7 @@ export type EventItem = {
   name: string
   date: string
   status: 'active' | 'upcoming'
+  isActive: boolean
   image: string
   desc: string
 }
@@ -14,7 +15,8 @@ export const EVENTS: EventItem[] = [
     name: 'POWER MEET SERIES',
     date: 'MAR 28, 2026',
     status: 'active',
-    image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1600&auto=format&fit=crop',
+    isActive: true,
+    image: '/prar4.jpeg',
     desc: 'High-energy coverage focused on peak attempts and atmosphere.'
   },
   {
@@ -22,7 +24,8 @@ export const EVENTS: EventItem[] = [
     name: 'IRON ARENA CLASSIC',
     date: 'APR 12, 2026',
     status: 'upcoming',
-    image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1600&auto=format&fit=crop',
+    isActive: false,
+    image: '/prar3.jpeg',
     desc: 'Classic meet visuals—clean athlete highlights and crowd moments.'
   },
   {
@@ -30,7 +33,8 @@ export const EVENTS: EventItem[] = [
     name: 'RAW STRENGTH OPEN',
     date: 'MAY 04, 2026',
     status: 'upcoming',
-    image: 'https://images.unsplash.com/photo-1542601098-8fc114e148e8?q=80&w=1600&auto=format&fit=crop',
+    isActive: false,
+    image: '/prar2.jpeg',
     desc: 'Raw strength storytelling—lifts, focus, and intensity.'
   },
   {
@@ -38,7 +42,26 @@ export const EVENTS: EventItem[] = [
     name: 'DEADLIFT SHOWDOWN',
     date: 'JUN 01, 2026',
     status: 'upcoming',
-    image: 'https://images.unsplash.com/photo-1507398941214-572c25f4b1dc?q=80&w=1600&auto=format&fit=crop',
+    isActive: false,
+    image: '/prar.jpeg',
     desc: 'Spotlighting heavy pulls and electrifying finales.'
+  },
+  {
+    id: 'e5',
+    name: 'STEEL CITY OPEN',
+    date: 'JUL 15, 2026',
+    status: 'upcoming',
+    isActive: false,
+    image: '/60b5492f-d596-4e34-bae0-aa609fbdbd05.jpeg',
+    desc: 'Industrial vibes and gritty platform moments—pure meet energy.'
+  },
+  {
+    id: 'e6',
+    name: 'PR HUNT INVITATIONAL',
+    date: 'AUG 02, 2026',
+    status: 'upcoming',
+    isActive: false,
+    image: '/500e10d9-c93c-4665-890b-9c23f22194a6.jpeg',
+    desc: 'Chasing personal bests with cinematic lighting and close-up intensity.'
   }
 ]

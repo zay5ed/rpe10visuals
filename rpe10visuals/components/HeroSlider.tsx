@@ -37,9 +37,9 @@ export default function HeroSlider() {
 
   const spread = useMemo(
     () => [
-      { x: 0, scale: 1, z: 50, opacity: 1, rotate: 0 },
-      { x: 120, scale: 0.9, z: 40, opacity: 0.95, rotate: 5 },
-      { x: 220, scale: 0.8, z: 30, opacity: 0.9, rotate: 10 }
+      { x: 0, scale: 1, z: 30, opacity: 1, rotate: 0 },
+      { x: 120, scale: 0.9, z: 20, opacity: 0.95, rotate: 5 },
+      { x: 220, scale: 0.8, z: 10, opacity: 0.9, rotate: 10 }
     ],
     []
   )
@@ -107,12 +107,19 @@ export default function HeroSlider() {
                       else if (info.offset.x > swipeThreshold) paginate(-1)
                     }}
                   >
-                    <Link href={`/competition/${active.id}`} className="block h-full w-full cursor-pointer">
+                    {active.isActive ? (
+                      <Link href={`/competition/${active.id}`} className="block h-full w-full cursor-pointer">
+                        <div
+                          className="h-full w-full bg-cover bg-center"
+                          style={{ backgroundImage: `url(${active.image})` }}
+                        />
+                      </Link>
+                    ) : (
                       <div
-                        className="h-full w-full bg-cover bg-center"
+                        className="h-full w-full bg-cover bg-center cursor-default"
                         style={{ backgroundImage: `url(${active.image})` }}
                       />
-                    </Link>
+                    )}
                     <button
                       aria-label="Previous"
                       onClick={(e) => {
@@ -139,7 +146,7 @@ export default function HeroSlider() {
             </div>
             <div className="absolute -bottom-8 left-1/2 -translate-x-1/2">
               <div className="flex items-center justify-center gap-2">
-                {active.status === 'active' ? (
+                {active.isActive ? (
                   <>
                     <span className="h-2.5 w-2.5 rounded-full bg-[#22c55e] animate-pulse shadow-[0_0_16px_#22c55e]" />
                     <span className="text-[#22c55e] text-xs tracking-wide font-semibold">ACTIVE</span>

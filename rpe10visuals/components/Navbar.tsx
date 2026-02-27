@@ -10,7 +10,7 @@ export default function Navbar() {
   const { cartItems } = useCart()
   const isMounted = useIsMounted()
   return (
-    <div className="fixed top-0 left-0 right-0 z-50">
+    <div className="fixed top-0 left-0 right-0 z-[100]">
       <nav className="mx-auto mt-4 w-[92%] rounded-2xl bg-black/20 backdrop-blur-md border border-white/10">
         <div className="flex items-center justify-between px-8 py-5">
           <Link href="/" className="text-white tracking-tight font-bold display uppercase text-4xl md:text-5xl">

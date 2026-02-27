@@ -1,9 +1,10 @@
 'use client'
 import { useCart } from '@/context/CartContext'
-import { Trash } from 'lucide-react'
+import { ArrowLeft, Trash } from 'lucide-react'
 import { useState } from 'react'
 import { useIsMounted } from '@/lib/useIsMounted'
 import Navbar from '@/components/Navbar'
+import { useRouter } from 'next/navigation'
 
 type ItemForm = {
   name: string
@@ -18,12 +19,35 @@ export default function CartPage() {
   const { cartItems, removeFromCart } = useCart()
   const isMounted = useIsMounted()
   const [forms, setForms] = useState<Record<string, ItemForm>>({})
+  const [lastComp] = useState<string | null>(() => {
+    try {
+      return typeof window !== 'undefined' ? localStorage.getItem('rpe10_last_competition') : null
+    } catch {
+      return null
+    }
+  })
+  const router = useRouter()
+
+  function handleBack() {
+    if (lastComp) {
+      router.push(`/competition/${lastComp}`)
+    } else {
+      router.back()
+    }
+  }
 
   if (!isMounted) return null
 
   return (
     <main className="px-6 py-12 pt-32">
       <Navbar />
+      <button
+        onClick={handleBack}
+        className="mb-4 inline-flex items-center gap-2 rounded-xl bg-black/30 border border-white/10 px-3 py-2 hover:bg-black/40"
+      >
+        <ArrowLeft size={16} />
+        <span>Back to Packages</span>
+      </button>
       <h1 className="display uppercase text-4xl font-bold mb-6">Your Cart</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-4">

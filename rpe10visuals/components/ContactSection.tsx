@@ -8,9 +8,9 @@ export default function ContactSection() {
         <h2 className="text-5xl font-bold display mb-10 text-center">CONTACT US</h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="space-y-3">
-            <p className="text-white/80">info@rpe10.com</p>
-            <p className="text-white/80">+1 (555) 123-4567</p>
-            <p className="text-white/80">123 Strength Ave, Iron City</p>
+            <p className="text-white/80">rpe10visuals@gmail.com</p>
+            <p className="text-white/80">+91 6366 031466</p>
+            <p className="text-white/80">Copyrights registered</p>
           </div>
           <div className="flex items-center justify-center gap-6">
             <a href="#" aria-label="Instagram" className="h-14 w-14 rounded-2xl bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-black/40">
