@@ -33,7 +33,7 @@ export default function HeroSlider() {
   const next1 = EVENTS[(currentIndex + 1) % n]
   const next2 = EVENTS[(currentIndex + 2) % n]
 
-  const swipeThreshold = 80
+  const swipeThreshold = 50
 
   const spread = useMemo(
     () => [
@@ -45,7 +45,7 @@ export default function HeroSlider() {
   )
 
   return (
-    <section className="relative h-screen flex items-center justify-center">
+    <section className="relative h-screen flex items-center justify-center touch-pan-y">
       <div className="w-full max-w-6xl px-4">
         <div className="flex flex-col lg:flex-row items-center justify-center gap-10">
           <div className="hidden lg:block w-[28rem]">
@@ -102,6 +102,7 @@ export default function HeroSlider() {
                     transition={SPRING}
                     drag="x"
                     dragElastic={0.2}
+                    dragConstraints={{ left: 0, right: 0 }}
                     onDragEnd={(_, info) => {
                       if (info.offset.x < -swipeThreshold) paginate(1)
                       else if (info.offset.x > swipeThreshold) paginate(-1)

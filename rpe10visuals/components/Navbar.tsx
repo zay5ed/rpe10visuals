@@ -35,13 +35,23 @@ export default function Navbar() {
               )}
             </Link>
           </div>
-          <button
-            className="md:hidden inline-flex items-center justify-center w-12 h-12 rounded-xl bg-black/30 backdrop-blur-md border border-white/10 text-white"
-            onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle menu"
-          >
-            {open ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          <div className="md:hidden flex items-center gap-3">
+            <Link href="/cart" className="relative inline-flex items-center justify-center w-12 h-12 rounded-xl bg-black/30 backdrop-blur-md border border-white/10 text-white">
+              <ShoppingBag />
+              {isMounted && cartItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 h-5 min-w-5 px-1 rounded-full bg-[#ef4444] text-white text-xs flex items-center justify-center">
+                  {cartItems.length}
+                </span>
+              )}
+            </Link>
+            <button
+              className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-black/30 backdrop-blur-md border border-white/10 text-white"
+              onClick={() => setOpen((v) => !v)}
+              aria-label="Toggle menu"
+            >
+              {open ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </div>
         {open && (
           <div className="md:hidden px-8 pb-5">
@@ -54,9 +64,6 @@ export default function Navbar() {
               </Link>
               <Link href="#contact" className="text-white/90 hover:text-white" onClick={() => setOpen(false)}>
                 Contact us
-              </Link>
-              <Link href="/cart" className="text-white/90 hover:text-white" onClick={() => setOpen(false)}>
-                Cart
               </Link>
             </div>
           </div>

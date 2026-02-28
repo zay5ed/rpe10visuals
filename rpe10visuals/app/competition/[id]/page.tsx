@@ -85,13 +85,14 @@ export default function CompetitionPage() {
             {PACKAGES.map((pkg) => {
               const active = selected?.key === pkg.key
               return (
-                <button
+                <div
                   key={pkg.key}
                   onClick={() => setSelected(pkg)}
-                  className={`rounded-2xl px-5 py-7 min-h-[320px] text-left border flex flex-col justify-between ${active ? 'border-white bg-white text-black' : 'border-white bg-transparent text-white'} transition-colors`}
+                  className={`rounded-2xl px-5 py-7 min-h-min md:min-h-[320px] text-left border flex flex-col justify-between ${active ? 'border-white bg-white text-black' : 'border-white bg-transparent text-white'} transition-colors`}
+                  role="button"
                 >
                   <div className="text-xl font-bold">{pkg.name} (₹{pkg.price})</div>
-                  <ul className={`mt-8 space-y-2 ${active ? 'text-black/80' : 'text-white/70'}`}>
+                  <ul className={`mt-4 md:mt-8 space-y-2 ${active ? 'text-black/80' : 'text-white/70'}`}>
                     {pkg.key === 'p1' && (
                       <>
                         <li>• 12 High-Res Pictures</li>
@@ -117,7 +118,18 @@ export default function CompetitionPage() {
                       </>
                     )}
                   </ul>
-                </button>
+                  {active && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleAdd()
+                      }}
+                      className="md:hidden w-full mt-6 bg-black text-white py-3 rounded-xl"
+                    >
+                      ADD TO CART
+                    </button>
+                  )}
+                </div>
               )
             })}
           </div>
@@ -125,7 +137,7 @@ export default function CompetitionPage() {
             <button
               onClick={handleAdd}
               disabled={!selected}
-              className={`inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 ${selected ? 'bg-white text-black hover:bg-white/90' : 'opacity-50 cursor-not-allowed bg-white/5 text-white/70'}`}
+              className={`hidden md:inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 ${selected ? 'bg-white text-black hover:bg-white/90' : 'opacity-50 cursor-not-allowed bg-white/5 text-white/70'}`}
             >
               ADD TO CART
             </button>

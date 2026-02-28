@@ -11,8 +11,8 @@ import ContactSection from "@/components/ContactSection"
 export default function Home() {
   const [showIntro, setShowIntro] = useState(true)
   return (
-    <main className="min-h-screen relative">
-      <div className="relative">
+    <main className="min-h-screen relative overflow-x-hidden touch-pan-y">
+      <div className="relative overflow-x-hidden">
         <Navbar />
         <HeroSlider />
         <PackagesSection />
