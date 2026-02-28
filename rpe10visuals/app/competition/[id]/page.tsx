@@ -31,6 +31,7 @@ export default function CompetitionPage() {
   const { addToCart } = useCart()
   const [selected, setSelected] = useState<PackageOption | null>(null)
   const [toastOpen, setToastOpen] = useState(false)
+  const [lastAdded, setLastAdded] = useState<PackageOption | null>(null)
   const isMounted = useIsMounted()
 
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function CompetitionPage() {
         localStorage.setItem('rpe10_last_competition', String(id))
       }
     } catch {}
+    setLastAdded({ ...selected })
     addToCart({
       id: `${id}-${selected.key}-${Date.now()}`,
       compName,
@@ -148,7 +150,7 @@ export default function CompetitionPage() {
       {/* Details section removed per new wireframe */}
 
       <AnimatePresence>
-        {toastOpen && selected && (
+        {toastOpen && lastAdded && (
           <motion.div
             initial={{ opacity: 0, x: 80, y: -20 }}
             animate={{ opacity: 1, x: 0, y: 0 }}
@@ -161,7 +163,7 @@ export default function CompetitionPage() {
             </div>
             <div>
               <div className="font-semibold">Added to Cart</div>
-              <div className="text-white/70 text-sm">{selected.name} • ₹{selected.price}</div>
+              <div className="text-white/70 text-sm">{lastAdded.name} • ₹{lastAdded.price}</div>
             </div>
             <Link href="/cart" className="ml-4 text-sm underline">
               VIEW CART
