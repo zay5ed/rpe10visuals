@@ -7,12 +7,20 @@ export type CartItem = {
   packageName: string
   price: number
   image?: string
+  lifterName?: string
+  weightClass?: string
+  phone?: string
+  email?: string
+  videoFormat?: '16:9' | '9:16'
+  songChoice?: string
 }
 
 type CartContextValue = {
   cartItems: CartItem[]
   addToCart: (item: CartItem) => void
   removeFromCart: (id: string) => void
+  updateCartItemData: (id: string, data: Partial<CartItem>) => void
+  clearCart: () => void
 }
 
 const CartContext = createContext<CartContextValue | undefined>(undefined)
@@ -41,7 +49,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setCartItems((prev) => prev.filter((it) => it.id !== id))
   }
 
-  const value = useMemo(() => ({ cartItems, addToCart, removeFromCart }), [cartItems])
+  const updateCartItemData = (id: string, data: Partial<CartItem>) => {
+    setCartItems((prev) =>
+      prev.map((it) => (it.id === id ? { ...it, ...data } : it))
+    )
+  }
+
+  const clearCart = () => setCartItems([])
+
+  const value = useMemo(
+    () => ({ cartItems, addToCart, removeFromCart, updateCartItemData, clearCart }),
+    [cartItems]
+  )
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
 

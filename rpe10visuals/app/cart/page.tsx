@@ -5,20 +5,11 @@ import { useState } from 'react'
 import { useIsMounted } from '@/lib/useIsMounted'
 import Navbar from '@/components/Navbar'
 import { useRouter } from 'next/navigation'
-
-type ItemForm = {
-  name: string
-  weightClass: string
-  phone: string
-  email: string
-  song?: string
-  format?: '16:9' | '9:16'
-}
+import { getSupabaseClient } from '@/lib/supabase'
 
 export default function CartPage() {
-  const { cartItems, removeFromCart } = useCart()
+  const { cartItems, removeFromCart, updateCartItemData, clearCart } = useCart()
   const isMounted = useIsMounted()
-  const [forms, setForms] = useState<Record<string, ItemForm>>({})
   const [lastComp] = useState<string | null>(() => {
     try {
       return typeof window !== 'undefined' ? localStorage.getItem('rpe10_last_competition') : null
@@ -33,6 +24,54 @@ export default function CartPage() {
       router.push(`/competition/${lastComp}`)
     } else {
       router.back()
+    }
+  }
+
+  async function handleCheckout() {
+    if (cartItems.length === 0) return
+    const missing: string[] = []
+    for (const it of cartItems) {
+      const isVideo = /video/i.test(it.packageName)
+      const isHype = /hype/i.test(it.packageName)
+      if (!it.lifterName) missing.push(`${it.packageName}: Lifter Name`)
+      if (!it.weightClass) missing.push(`${it.packageName}: Weight Class / Lot Number`)
+      if (!it.phone) missing.push(`${it.packageName}: Phone Number`)
+      if (!it.email) missing.push(`${it.packageName}: Email`)
+      if (isVideo && !it.videoFormat) missing.push(`${it.packageName}: Video Format`)
+      if (isHype && !it.songChoice) missing.push(`${it.packageName}: Song Choice & Timestamp`)
+    }
+    if (missing.length > 0) {
+      alert(`Please complete required fields:\n\n- ${missing.join('\n- ')}`)
+      return
+    }
+    try {
+      const supabase = await getSupabaseClient()
+      const rows = cartItems.map((it) => ({
+        created_at: new Date().toISOString(),
+        event_name: it.compName,
+        package_name: it.packageName,
+        price: it.price,
+        lifter_name: it.lifterName ?? '',
+        weight_class: it.weightClass ?? '',
+        phone: it.phone ?? '',
+        email: it.email ?? '',
+        video_format: it.videoFormat ?? null,
+        song_choice: it.songChoice ?? null,
+        payment_status: 'unpaid',
+        razorpay_order_id: null,
+      }))
+      const { error } = await supabase.from('orders').insert(rows)
+      if (error) {
+        console.error('Supabase insert error', error)
+        alert('Failed to save order. Please try again.')
+        return
+      }
+      console.log('Orders saved to Supabase')
+      alert('Order saved as unpaid! Razorpay coming soon.')
+      clearCart()
+    } catch (e) {
+      console.error(e)
+      alert('Unexpected error while saving order.')
     }
   }
 
@@ -55,15 +94,6 @@ export default function CartPage() {
           {cartItems.map((item) => {
             const isVideo = /video/i.test(item.packageName)
             const isHype = /hype/i.test(item.packageName)
-            const base = forms[item.id] || ({} as ItemForm)
-            const f: ItemForm = {
-              name: base.name ?? '',
-              weightClass: base.weightClass ?? '',
-              phone: base.phone ?? '',
-              email: base.email ?? '',
-              ...(isVideo ? { format: base.format ?? '16:9' } : {}),
-              ...(isHype ? { song: base.song ?? '' } : {})
-            }
             return (
               <div key={item.id} className="rounded-2xl border border-white/10 p-4 bg-black/20">
                 <div className="flex items-center justify-between">
@@ -84,34 +114,26 @@ export default function CartPage() {
                   <input
                     className="w-full rounded-xl bg-black/30 border border-white/10 px-3 py-2 text-white placeholder-white/50"
                     placeholder="Lifter Name"
-                    value={f.name ?? ''}
-                    onChange={(e) =>
-                      setForms((p) => ({ ...p, [item.id]: { ...p[item.id], name: e.target.value } }))
-                    }
+                    value={item.lifterName ?? ''}
+                    onChange={(e) => updateCartItemData(item.id, { lifterName: e.target.value })}
                   />
                   <input
                     className="w-full rounded-xl bg-black/30 border border-white/10 px-3 py-2 text-white placeholder-white/50"
                     placeholder="Weight Class / Lot Number"
-                    value={f.weightClass ?? ''}
-                    onChange={(e) =>
-                      setForms((p) => ({ ...p, [item.id]: { ...p[item.id], weightClass: e.target.value } }))
-                    }
+                    value={item.weightClass ?? ''}
+                    onChange={(e) => updateCartItemData(item.id, { weightClass: e.target.value })}
                   />
                   <input
                     className="w-full rounded-xl bg-black/30 border border-white/10 px-3 py-2 text-white placeholder-white/50"
                     placeholder="Phone Number"
-                    value={f.phone ?? ''}
-                    onChange={(e) =>
-                      setForms((p) => ({ ...p, [item.id]: { ...p[item.id], phone: e.target.value } }))
-                    }
+                    value={item.phone ?? ''}
+                    onChange={(e) => updateCartItemData(item.id, { phone: e.target.value })}
                   />
                   <input
                     className="w-full rounded-xl bg-black/30 border border-white/10 px-3 py-2 text-white placeholder-white/50"
                     placeholder="Email"
-                    value={f.email ?? ''}
-                    onChange={(e) =>
-                      setForms((p) => ({ ...p, [item.id]: { ...p[item.id], email: e.target.value } }))
-                    }
+                    value={item.email ?? ''}
+                    onChange={(e) => updateCartItemData(item.id, { email: e.target.value })}
                   />
                   {isVideo && (
                     <div className="md:col-span-2">
@@ -120,20 +142,16 @@ export default function CartPage() {
                         <label className="inline-flex items-center gap-2">
                           <input
                             type="radio"
-                            checked={(f.format ?? '16:9') === '16:9'}
-                            onChange={() =>
-                              setForms((p) => ({ ...p, [item.id]: { ...p[item.id], format: '16:9' } }))
-                            }
+                            checked={(item.videoFormat ?? '16:9') === '16:9'}
+                            onChange={() => updateCartItemData(item.id, { videoFormat: '16:9' })}
                           />
                           <span>16:9 Horizontal</span>
                         </label>
                         <label className="inline-flex items-center gap-2">
                           <input
                             type="radio"
-                            checked={(f.format ?? '16:9') === '9:16'}
-                            onChange={() =>
-                              setForms((p) => ({ ...p, [item.id]: { ...p[item.id], format: '9:16' } }))
-                            }
+                            checked={(item.videoFormat ?? '16:9') === '9:16'}
+                            onChange={() => updateCartItemData(item.id, { videoFormat: '9:16' })}
                           />
                           <span>9:16 Vertical</span>
                         </label>
@@ -145,10 +163,8 @@ export default function CartPage() {
                       className="md:col-span-2 w-full rounded-xl bg-black/30 border border-white/10 px-3 py-2 text-white placeholder-white/50"
                       placeholder="Song Choice & Timestamp"
                       rows={4}
-                      value={f.song ?? ''}
-                      onChange={(e) =>
-                        setForms((p) => ({ ...p, [item.id]: { ...p[item.id], song: e.target.value } }))
-                      }
+                      value={item.songChoice ?? ''}
+                      onChange={(e) => updateCartItemData(item.id, { songChoice: e.target.value })}
                     />
                   )}
                 </div>
@@ -159,7 +175,10 @@ export default function CartPage() {
         <div className="space-y-4">
           <div className="rounded-2xl border border-white/10 p-4 bg-black/20">
             <h2 className="font-semibold mb-3">Checkout</h2>
-            <button className="w-full inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white/10 border border-white/20">
+            <button
+              onClick={handleCheckout}
+              className="w-full inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white/10 border border-white/20"
+            >
               PROCEED TO PAYMENT
             </button>
           </div>
