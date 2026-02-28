@@ -45,11 +45,7 @@ export default function CartPage() {
       return
     }
     try {
-      const supabase = getSupabaseClient() as {
-        from: (table: string) => {
-          insert: (rows: unknown) => Promise<unknown>
-        }
-      }
+      const supabase = getSupabaseClient()
       const rows = cartItems.map((it) => ({
         created_at: new Date().toISOString(),
         event_name: it.compName,
