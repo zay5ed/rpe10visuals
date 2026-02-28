@@ -45,7 +45,11 @@ export default function CartPage() {
       return
     }
     try {
-      const supabase = getSupabaseClient()
+      const supabase = getSupabaseClient() as {
+        from: (table: string) => {
+          insert: (rows: unknown) => Promise<unknown>
+        }
+      }
       const rows = cartItems.map((it) => ({
         created_at: new Date().toISOString(),
         event_name: it.compName,
@@ -60,8 +64,8 @@ export default function CartPage() {
         payment_status: 'unpaid',
         razorpay_order_id: null,
       }))
-      const { error } = await supabase.from('orders').insert(rows)
-      if (error) {
+      const { error } = (await supabase.from('orders').insert(rows)) as { error?: unknown }
+      if (error != null) {
         console.error('Supabase insert error', error)
         alert('Failed to save order. Please try again.')
         return

@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-type SupabaseLike = {
+export type SupabaseLike = {
   from: (table: string) => {
     insert: (rows: unknown) => Promise<unknown>
   }
