@@ -42,9 +42,11 @@ export default function Home() {
               <div className="flex flex-col items-center text-center gap-6">
                 <h1 className="display uppercase text-4xl font-bold tracking-tight">RPE 10 VISUALS</h1>
                 <p className="text-lg leading-relaxed text-zinc-800 max-w-lg">
-                  We document suffering and triumph—the brutal honesty of effort when weight meets will.
-                  This isn&apos;t just content; it&apos;s a record of pressure, grit, and what it takes
-                  to bring your best when it matters.
+                  We document the work and the wins. 
+                  When the bar stalls and you don&apos;t.
+                  The breath before the lift. The fight through it.
+                  This isn&apos;t just content.
+                  It&apos;s proof of what it took.
                 </p>
                 <button
                   onClick={() => setShowIntro(false)}
