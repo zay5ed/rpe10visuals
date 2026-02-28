@@ -17,8 +17,8 @@ type PackageOption = {
 }
 
 const PACKAGES: PackageOption[] = [
-  { key: 'p1', name: 'Photo Package', price: 1500 },
-  { key: 'p2', name: 'Video Package', price: 2000 },
+  { key: 'p1', name: 'Photo Package', price: 2000 },
+  { key: 'p2', name: 'Video Package', price: 2500 },
   { key: 'p3', name: 'Hype Package', price: 3500 },
 ]
 
