@@ -7,6 +7,7 @@ import PackagesSection from "@/components/PackagesSection"
 import AboutSection from "@/components/AboutSection"
 import FAQSection from "@/components/FAQSection"
 import ContactSection from "@/components/ContactSection"
+import Image from "next/image"
 
 export default function Home() {
   const [showIntro, setShowIntro] = useState(true)
@@ -40,7 +41,16 @@ export default function Home() {
               className="max-w-xl w-full h-auto rounded-3xl bg-gray-100/90 text-black shadow-2xl border border-white/20 p-10"
             >
               <div className="flex flex-col items-center text-center gap-6">
-                <h1 className="display uppercase text-4xl font-bold tracking-tight">RPE 10 VISUALS</h1>
+                <div className="flex items-center justify-center">
+                  <Image
+                    src="/logo-dark.png"
+                    alt="RPE 10 Visuals"
+                    width={350}
+                    height={80}
+                    className="w-[350px] h-auto max-w-full"
+                    priority
+                  />
+                </div>
                 <p className="text-lg leading-relaxed text-zinc-800 max-w-lg">
                   We document the work and the wins. 
                   When the bar stalls and you don&apos;t.

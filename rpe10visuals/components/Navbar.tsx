@@ -12,8 +12,11 @@ export default function Navbar() {
   return (
     <div className="fixed top-0 left-0 right-0 z-[100]">
       <nav className="mx-auto mt-4 w-[92%] rounded-2xl bg-black/20 backdrop-blur-md border border-white/10">
-        <div className="flex items-center justify-between px-8 py-5">
-          <Link href="/" className="text-white tracking-tight font-bold display uppercase text-4xl md:text-5xl">
+        <div className="flex items-center justify-between px-4 md:px-8 py-4 md:py-5">
+          <Link
+            href="/"
+            className="text-white tracking-tight font-bold display uppercase text-3xl md:text-5xl overflow-hidden text-ellipsis whitespace-nowrap max-w-[60%] sm:max-w-[70%]"
+          >
             RPE10VISUALS
           </Link>
           <div className="hidden md:flex items-center gap-10 text-lg">
@@ -35,7 +38,7 @@ export default function Navbar() {
               )}
             </Link>
           </div>
-          <div className="md:hidden flex items-center gap-3">
+          <div className="md:hidden flex items-center gap-2 sm:gap-3 flex-shrink-0">
             <Link href="/cart" className="relative inline-flex items-center justify-center w-12 h-12 rounded-xl bg-black/30 backdrop-blur-md border border-white/10 text-white">
               <ShoppingBag />
               {isMounted && cartItems.length > 0 && (
