@@ -1,12 +1,23 @@
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 
-const spaceGrotesk = Space_Grotesk({
+const hostGrotesk = localFont({
+  src: [
+    {
+      path: "../public/fonts/Host_Grotesk/HostGrotesk-VariableFont_wght.ttf",
+      weight: "100 900",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Host_Grotesk/HostGrotesk-Italic-VariableFont_wght.ttf",
+      weight: "100 900",
+      style: "italic",
+    },
+  ],
   variable: "--font-body",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 const calSans = localFont({
@@ -33,7 +44,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${spaceGrotesk.variable} ${calSans.variable} antialiased bg-[#050505] text-white`}>
+      <body className={`${hostGrotesk.variable} ${calSans.variable} antialiased bg-[#050505] text-white`}>
         <CartProvider>{children}</CartProvider>
       </body>
     </html>
