@@ -61,6 +61,7 @@ export default function HeroSlider() {
                 <h3 className="text-4xl font-bold display mb-3">{active.name}</h3>
                 <p className="text-white/70 mb-2">{active.date}</p>
                 <p className="text-white/70 leading-7">{active.desc}</p>
+                <p className="text-white/60 mt-2">{active.location}</p>
               </motion.div>
             </AnimatePresence>
           </div>
@@ -175,6 +176,7 @@ export default function HeroSlider() {
                 <h3 className="text-3xl font-bold display mb-2">{active.name}</h3>
                 <p className="text-white/70 mb-2">{active.date}</p>
                 <p className="text-white/70 leading-7">{active.desc}</p>
+                <p className="text-white/60 mt-2">{active.location}</p>
               </motion.div>
             </AnimatePresence>
           </div>
