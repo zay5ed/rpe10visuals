@@ -45,7 +45,7 @@ export default function HeroSlider() {
   )
 
   return (
-    <section className="relative h-screen flex items-center justify-center touch-pan-y pb-16">
+    <section className="relative h-screen flex items-center justify-center touch-pan-y pb-20">
       <div className="w-full max-w-6xl px-4">
         <div className="flex flex-col lg:flex-row items-center justify-center gap-10">
           <div className="hidden lg:block w-[28rem]">
@@ -66,7 +66,7 @@ export default function HeroSlider() {
             </AnimatePresence>
           </div>
 
-          <div className="relative h-[72vh] min-h-[520px] flex items-center justify-center">
+          <div className="relative h-[60vh] min-h-[420px] sm:h-[64vh] md:h-[72vh] md:min-h-[520px] flex items-center justify-center">
             <div className="relative w-[14rem] sm:w-[16rem] md:w-[18rem] aspect-[9/16]">
               <div className="absolute inset-0" style={{ zIndex: spread[2].z }}>
                 <motion.div

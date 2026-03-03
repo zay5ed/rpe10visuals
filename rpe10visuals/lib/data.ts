@@ -19,7 +19,7 @@ export const EVENTS: EventItem[] = [
     isActive: true,
     image: '/PION_2026-1.jpeg',
     desc: 'National Senior Classic Powerlifting Championship 2026',
-    location: '📍New Delhi, Delhi'
+    location: '📍Mangalore, Karnataka'
   },
   {
     id: 'e3',
@@ -39,7 +39,7 @@ export const EVENTS: EventItem[] = [
     isActive: false,
     image: 'PIBN_2026.jpeg',
     desc: 'National Classic & Equipped Bench Press Championship 2027',
-    location: '📍Mangalore, Karnataka'
+    location: '📍New Delhi, Delhi'
   }
   
  
