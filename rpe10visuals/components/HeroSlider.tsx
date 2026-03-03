@@ -55,7 +55,7 @@ export default function HeroSlider() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.35 }}
+                transition={{ duration: 0.65 }}
                 className="text-left"
               >
                 <h3 className="text-4xl font-bold display mb-3">{active.name}</h3>
