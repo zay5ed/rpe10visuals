@@ -22,11 +22,11 @@ export const EVENTS: EventItem[] = [
   {
     id: 'e2',
     name: 'Powerlifting India Benchpress Nationals',
-    date: 'APR 12, 2026',
+    date: 'JAN 5TH to 10TH, 2027',
     status: 'upcoming',
     isActive: false,
     image: 'PIBN_2026.jpeg',
-    desc: 'Classic meet visuals—clean athlete highlights and crowd moments.'
+    desc: 'National Classic & Equipped Bench Press Championship 2027'
   },
   {
     id: 'e3',

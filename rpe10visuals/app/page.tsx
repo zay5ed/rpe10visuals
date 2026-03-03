@@ -15,6 +15,7 @@ export default function Home() {
     <main className="min-h-screen relative overflow-x-hidden touch-pan-y">
       <div className="relative overflow-x-hidden">
         <Navbar />
+        <div className="h-[calc(env(safe-area-inset-top,0px)+96px)] md:h-[calc(env(safe-area-inset-top,0px)+108px)]" aria-hidden="true" />
         <HeroSlider />
         <PackagesSection />
         <AboutSection />

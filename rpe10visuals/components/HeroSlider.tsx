@@ -45,7 +45,7 @@ export default function HeroSlider() {
   )
 
   return (
-    <section className="relative h-screen flex items-center justify-center touch-pan-y pt-[calc(env(safe-area-inset-top,0px)+88px)] md:pt-[calc(env(safe-area-inset-top,0px)+96px)] pb-12">
+    <section className="relative h-screen flex items-center justify-center touch-pan-y pb-12">
       <div className="w-full max-w-6xl px-4">
         <div className="flex flex-col lg:flex-row items-center justify-center gap-10">
           <div className="hidden lg:block w-[28rem]">
