@@ -16,7 +16,7 @@ export default function Home() {
       <div className="relative overflow-x-hidden">
         <Navbar />
         <div
-          className="h-[calc(env(safe-area-inset-top,0px)+132px)] md:h-[calc(env(safe-area-inset-top,0px)+148px)]"
+          className="h-[calc(env(safe-area-inset-top,0px)+168px)] md:h-[calc(env(safe-area-inset-top,0px)+108px)]"
           aria-hidden="true"
         />
         <HeroSlider />
