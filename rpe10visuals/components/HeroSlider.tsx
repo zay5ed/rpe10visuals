@@ -45,7 +45,7 @@ export default function HeroSlider() {
   )
 
   return (
-    <section className="relative h-screen flex items-center justify-center touch-pan-y pb-12">
+    <section className="relative h-screen flex items-center justify-center touch-pan-y pb-16">
       <div className="w-full max-w-6xl px-4">
         <div className="flex flex-col lg:flex-row items-center justify-center gap-10">
           <div className="hidden lg:block w-[28rem]">
@@ -146,7 +146,7 @@ export default function HeroSlider() {
                 </AnimatePresence>
               </div>
             </div>
-            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2">
+            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 hidden lg:block">
               <div className="flex items-center justify-center gap-2">
                 {active.isActive ? (
                   <>
@@ -163,7 +163,7 @@ export default function HeroSlider() {
             </div>
           </div>
 
-          <div className="w-full px-2 lg:hidden mt-6">
+          <div className="w-full px-2 lg:hidden mt-4 mb-8">
             <AnimatePresence mode="wait">
               <motion.div
                 key={active.id + '-m'}
@@ -173,6 +173,19 @@ export default function HeroSlider() {
                 transition={{ duration: 0.3 }}
                 className="text-center"
               >
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  {active.isActive ? (
+                    <>
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#22c55e] animate-pulse shadow-[0_0_16px_#22c55e]" />
+                      <span className="text-[#22c55e] text-xs tracking-wide font-semibold">ACTIVE</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#ef4444] animate-pulse shadow-[0_0_16px_#ef4444]" />
+                      <span className="text-[#ef4444] text-xs tracking-wide font-semibold">UPCOMING</span>
+                    </>
+                  )}
+                </div>
                 <h3 className="text-3xl font-bold display mb-2">{active.name}</h3>
                 <p className="text-white/70 mb-2">{active.date}</p>
                 <p className="text-white/70 leading-7">{active.desc}</p>

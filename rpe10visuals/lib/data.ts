@@ -22,16 +22,6 @@ export const EVENTS: EventItem[] = [
     location: '📍New Delhi, Delhi'
   },
   {
-    id: 'e2',
-    name: 'Powerlifting India Benchpress Nationals',
-    date: 'JANUARY 5TH to 10TH, 2027',
-    status: 'upcoming',
-    isActive: false,
-    image: 'PIBN_2026.jpeg',
-    desc: 'National Classic & Equipped Bench Press Championship 2027',
-    location: '📍Mangalore, Karnataka'
-  },
-  {
     id: 'e3',
     name: 'Powerlifting India Junior Nationals 2026',
     date: 'MAY 15TH to 20TH, 2026',
@@ -40,6 +30,16 @@ export const EVENTS: EventItem[] = [
     image: '/PIJN_2026.jpeg',
     desc: 'National Sub Junior & Junior Classic Powerlifting Championship 2026',
     location: '📍Amalapuram, Andhra Pradesh'
+  },
+  {
+    id: 'e2',
+    name: 'Powerlifting India Benchpress Nationals',
+    date: 'JANUARY 5TH to 10TH, 2027',
+    status: 'upcoming',
+    isActive: false,
+    image: 'PIBN_2026.jpeg',
+    desc: 'National Classic & Equipped Bench Press Championship 2027',
+    location: '📍Mangalore, Karnataka'
   }
   
  
