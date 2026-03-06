@@ -5,7 +5,7 @@ export default function ContactSection() {
   return (
     <section id="contact" className="py-20 flex items-center justify-center px-6">
       <div className="w-full max-w-6xl">
-        <h2 className="text-5xl font-bold display mb-10 text-center">CONTACT US</h2>
+        <h2 className="text-5xl font-bold display mb-10 text-center text-[#BEA1F7]">CONTACT US</h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="space-y-3">
             <p className="text-white/80">rpe10visuals@gmail.com</p>
@@ -13,13 +13,13 @@ export default function ContactSection() {
             <p className="text-white/80">Copyrights registered</p>
           </div>
           <div className="flex items-center justify-center gap-6">
-            <a href="#" aria-label="Instagram" className="h-14 w-14 rounded-2xl bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-black/40">
+            <a href="#" aria-label="Instagram" className="h-14 w-14 rounded-2xl bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center text-[#BEA1F7] hover:bg-black/40">
               <Instagram />
             </a>
-            <a href="#" aria-label="Twitter" className="h-14 w-14 rounded-2xl bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-black/40">
+            <a href="#" aria-label="Twitter" className="h-14 w-14 rounded-2xl bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center text-[#BEA1F7] hover:bg-black/40">
               <Twitter />
             </a>
-            <a href="#" aria-label="YouTube" className="h-14 w-14 rounded-2xl bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center text-white hover:bg-black/40">
+            <a href="#" aria-label="YouTube" className="h-14 w-14 rounded-2xl bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center text-[#BEA1F7] hover:bg-black/40">
               <Youtube />
             </a>
           </div>
@@ -43,6 +43,10 @@ export default function ContactSection() {
               </button>
             </form>
           </div>
+        </div>
+        <div className="mt-10 text-center text-white/80">
+          <a href="/terms" className="underline hover:text-white mr-6">Terms & Conditions</a>
+          <a href="/refund-policy" className="underline hover:text-white">Refund Policy</a>
         </div>
       </div>
     </section>

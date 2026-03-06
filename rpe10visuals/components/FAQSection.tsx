@@ -15,7 +15,7 @@ export default function FAQSection() {
   return (
     <section id="faqs" className="py-20 flex items-center justify-center px-6">
       <div className="w-full max-w-3xl">
-        <h2 className="text-5xl font-bold display mb-8 text-center">FAQs</h2>
+        <h2 className="text-5xl font-bold display mb-8 text-center text-[#BEA1F7]">FAQs</h2>
         <div className="divide-y divide-white/10 border-t border-white/10">
           {ITEMS.map((it, idx) => {
             const expanded = open === idx

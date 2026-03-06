@@ -12,11 +12,11 @@ export default function Navbar() {
   const isMounted = useIsMounted()
   return (
     <div className="fixed top-0 left-0 right-0 z-[100]">
-      <nav className="mx-auto mt-4 w-[92%] rounded-2xl bg-black">
+      <nav className="mx-auto mt-4 w-[92%] rounded-2xl bg-black border border-[#BEA1F7]">
         <div className="flex items-center justify-between px-4 md:px-8 py-4 md:py-5">
           <Link href="/" className="block overflow-hidden max-w-[60%] sm:max-w-[70%]">
             <Image
-              src="/navbar-logo.png"
+              src="/navbar-logo2.png"
               alt="RPE 10 Visuals"
               width={180}
               height={36}
@@ -25,16 +25,16 @@ export default function Navbar() {
             />
           </Link>
           <div className="hidden md:flex items-center gap-10 text-lg">
-            <Link href="#about" className="text-white/90 hover:text-white">
+            <Link href="#about" className="text-[#BEA1F7] hover:text-[#BEA1F7]">
               About us
             </Link>
-            <Link href="#faqs" className="text-white/90 hover:text-white">
+            <Link href="#faqs" className="text-[#BEA1F7] hover:text-[#BEA1F7]">
               FAQs
             </Link>
-            <Link href="#contact" className="text-white/90 hover:text-white">
+            <Link href="#contact" className="text-[#BEA1F7] hover:text-[#BEA1F7]">
               Contact us
             </Link>
-            <Link href="/cart" className="relative inline-flex items-center text-white/90 hover:text-white">
+            <Link href="/cart" className="relative inline-flex items-center text-[#BEA1F7] hover:text-[#BEA1F7]">
               <ShoppingBag />
               {isMounted && cartItems.length > 0 && (
                 <span className="absolute -top-2 -right-2 h-5 min-w-5 px-1 rounded-full bg-[#ef4444] text-white text-xs flex items-center justify-center">
@@ -44,7 +44,7 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="md:hidden flex items-center gap-2 sm:gap-3 flex-shrink-0">
-            <Link href="/cart" className="relative inline-flex items-center justify-center w-12 h-12 rounded-xl bg-black/30 backdrop-blur-md border border-white/10 text-white">
+            <Link href="/cart" className="relative inline-flex items-center justify-center w-12 h-12 rounded-xl bg-black/30 backdrop-blur-md border border-white/10 text-[#BEA1F7]">
               <ShoppingBag />
               {isMounted && cartItems.length > 0 && (
                 <span className="absolute -top-2 -right-2 h-5 min-w-5 px-1 rounded-full bg-[#ef4444] text-white text-xs flex items-center justify-center">

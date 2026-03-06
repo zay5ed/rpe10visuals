@@ -82,7 +82,7 @@ export default function CompetitionPage() {
         </div>
         <div className="mt-24">
           <h1 className="display uppercase text-5xl font-bold mb-3">{compName}</h1>
-          <h2 className="text-white/80 mb-6 uppercase">Select a Package</h2>
+          <h2 className="text-[#BEA1F7] mb-6 uppercase">Select a Package</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
             {PACKAGES.map((pkg) => {
               const active = selected?.key === pkg.key
@@ -90,7 +90,7 @@ export default function CompetitionPage() {
                 <div
                   key={pkg.key}
                   onClick={() => setSelected(pkg)}
-                  className={`rounded-2xl px-5 py-7 min-h-min md:min-h-[320px] text-left border flex flex-col justify-between ${active ? 'border-white bg-white text-black' : 'border-white bg-transparent text-white'} transition-colors`}
+                  className={`rounded-2xl px-5 py-7 min-h-min md:min-h-[320px] text-left border-2 border-[#BEA1F7] flex flex-col justify-between ${active ? 'bg-[#BEA1F7] text-black' : 'bg-transparent text-white'} transition-colors`}
                   role="button"
                 >
                   <div className="text-xl font-bold">{pkg.name} (₹{pkg.price})</div>
@@ -126,7 +126,7 @@ export default function CompetitionPage() {
                         e.stopPropagation()
                         handleAdd()
                       }}
-                      className="md:hidden w-full mt-6 bg-black text-white py-3 rounded-xl"
+                      className="md:hidden w-full mt-6 bg-[#BEA1F7] text-black py-3 rounded-xl"
                     >
                       ADD TO CART
                     </button>
@@ -139,7 +139,7 @@ export default function CompetitionPage() {
             <button
               onClick={handleAdd}
               disabled={!selected}
-              className={`hidden md:inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 ${selected ? 'bg-white text-black hover:bg-white/90' : 'opacity-50 cursor-not-allowed bg-white/5 text-white/70'}`}
+              className={`hidden md:inline-flex items-center justify-center px-6 py-3 rounded-xl border border-white/20 ${selected ? 'bg-[#BEA1F7] text-black hover:bg-[#BEA1F7]/90' : 'opacity-50 cursor-not-allowed bg-[#BEA1F7]/10 text-white/70'}`}
             >
               ADD TO CART
             </button>

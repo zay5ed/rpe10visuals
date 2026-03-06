@@ -7,14 +7,14 @@ export default function AboutSection() {
       <div className="max-w-3xl text-center">
         <div className="flex items-center justify-center mb-6">
           <Image
-            src="/logo-light-removebg-preview.png"
+            src="/logo-light-removebg-preview2.png"
             alt="RPE 10 Visuals"
             width={225}
             height={50}
             className="w-[225px] h-auto max-w-full"
           />
         </div>
-        <h2 className="text-5xl font-bold display mb-6">ABOUT US</h2>
+        <h2 className="text-5xl font-bold display mb-6 text-[#BEA1F7]">ABOUT US</h2>
         <div className="space-y-5 text-white/70 leading-7">
           <p>
             RPE10Visuals is a media company providing professional media packages for athletes competing in powerlifting competitions.
