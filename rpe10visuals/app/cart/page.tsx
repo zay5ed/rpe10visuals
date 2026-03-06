@@ -7,9 +7,28 @@ import Navbar from '@/components/Navbar'
 import { useRouter } from 'next/navigation'
 import { getSupabaseClient } from '@/lib/supabase'
 
+function loadRazorpay() {
+  return new Promise((resolve) => {
+    if (typeof window === 'undefined') {
+      resolve(false)
+      return
+    }
+    if ((window as any).Razorpay) {
+      resolve(true)
+      return
+    }
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.onload = () => resolve(true)
+    script.onerror = () => resolve(false)
+    document.body.appendChild(script)
+  })
+}
+
 export default function CartPage() {
   const { cartItems, removeFromCart, updateCartItemData, clearCart } = useCart()
   const isMounted = useIsMounted()
+  const [submitting, setSubmitting] = useState(false)
   const [lastComp] = useState<string | null>(() => {
     try {
       return typeof window !== 'undefined' ? localStorage.getItem('rpe10_last_competition') : null
@@ -45,11 +64,18 @@ export default function CartPage() {
       return
     }
     try {
-      const supabase = getSupabaseClient() as {
-        from: (table: string) => {
-          insert: (rows: unknown) => Promise<unknown>
-        }
+      setSubmitting(true)
+
+      const isLoaded = await loadRazorpay()
+      if (!isLoaded) {
+        alert('Razorpay SDK failed to load. Are you online?')
+        setSubmitting(false)
+        return
       }
+
+      const tempGroup = `temp_${Date.now()}_${Math.floor(Math.random() * 1000)}`
+      const supabaseClient: any = getSupabaseClient()
+
       const rows = cartItems.map((it) => ({
         created_at: new Date().toISOString(),
         event_name: it.compName,
@@ -61,21 +87,73 @@ export default function CartPage() {
         email: it.email ?? '',
         video_format: it.videoFormat ?? null,
         song_choice: it.songChoice ?? null,
+        exclude_watermark: it.exclude_watermark ?? false,
         payment_status: 'unpaid',
-        razorpay_order_id: null,
+        razorpay_order_id: tempGroup,
       }))
-      const { error } = (await supabase.from('orders').insert(rows)) as { error?: unknown }
-      if (error != null) {
+
+      const { error } = await supabaseClient.from('orders').insert(rows)
+      if (error) {
         console.error('Supabase insert error', error)
         alert('Failed to save order. Please try again.')
+        setSubmitting(false)
         return
       }
-      console.log('Orders saved to Supabase')
-      alert('Order saved as unpaid! Razorpay coming soon.')
-      clearCart()
+
+      const totalAmount = cartItems.reduce((sum, it) => sum + it.price + (it.exclude_watermark ? 750 : 0), 0) * 100
+      const res = await fetch('/api/razorpay/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: totalAmount, receipt: tempGroup })
+      })
+
+      if (!res.ok) {
+        alert('Failed to initialize payment')
+        setSubmitting(false)
+        return
+      }
+
+      const orderData = await res.json()
+
+      await supabaseClient.from('orders').update({ razorpay_order_id: orderData.id }).eq('razorpay_order_id', tempGroup)
+
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: 'RPE10 Visuals',
+        description: 'Competition Media Packages',
+        order_id: orderData.id,
+        handler: function (response: any) {
+          clearCart()
+          router.push('/success')
+        },
+        modal: {
+          ondismiss: function () {
+            setSubmitting(false)
+          }
+        },
+        prefill: {
+          name: cartItems[0]?.lifterName || '',
+          email: cartItems[0]?.email || '',
+          contact: cartItems[0]?.phone || ''
+        },
+        theme: {
+          color: '#000000'
+        }
+      }
+
+      const paymentObject = new (window as any).Razorpay(options)
+      paymentObject.on('payment.failed', function () {
+        alert('Payment failed. Please try again.')
+        setSubmitting(false)
+      })
+      paymentObject.open()
+
     } catch (e) {
       console.error(e)
       alert('Unexpected error while saving order.')
+      setSubmitting(false)
     }
   }
 
@@ -177,8 +255,8 @@ export default function CartPage() {
                     <input
                       id={`nowm-${item.id}`}
                       type="checkbox"
-                      checked={item.noWatermark ?? false}
-                      onChange={(e) => updateCartItemData(item.id, { noWatermark: e.target.checked })}
+                      checked={item.exclude_watermark ?? false}
+                      onChange={(e) => updateCartItemData(item.id, { exclude_watermark: e.target.checked })}
                     />
                     <label htmlFor={`nowm-${item.id}`} className="text-white/80">
                       Without watermark (₹750)
@@ -208,7 +286,7 @@ export default function CartPage() {
                         <span>—</span>
                       </div>
                     )}
-                    {it.noWatermark && (
+                    {it.exclude_watermark && (
                       <div className="flex items-center justify-between pl-4 text-white/80">
                         <span>Exclude watermark × 1</span>
                         <span>₹750</span>
@@ -221,15 +299,27 @@ export default function CartPage() {
                 <span>Total</span>
                 <span>
                   ₹
-                  {cartItems.reduce((sum, it) => sum + it.price + (it.noWatermark ? 750 : 0), 0)}
+                  {cartItems.reduce((sum, it) => sum + it.price + (it.exclude_watermark ? 750 : 0), 0)}
                 </span>
               </div>
             </div>
             <button
               onClick={handleCheckout}
-              className="w-full inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white/10 border border-white/20"
+              disabled={submitting}
+              aria-busy={submitting}
+              className="w-full inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
             >
-              PROCEED TO PAYMENT
+              {submitting ? (
+                <span className="inline-flex items-center gap-2">
+                  <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
+                    <circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                  </svg>
+                  Processing...
+                </span>
+              ) : (
+                'PROCEED TO PAYMENT'
+              )}
             </button>
           </div>
         </div>

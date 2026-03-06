@@ -13,7 +13,7 @@ export type CartItem = {
   email?: string
   videoFormat?: '16:9' | '9:16'
   songChoice?: string
-  noWatermark?: boolean
+  exclude_watermark?: boolean
 }
 
 type CartContextValue = {
