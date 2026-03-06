@@ -15,7 +15,7 @@ export default function PackagesSection() {
             <ul className="space-y-2 text-lg">
               <li>• 12 High-Res Pictures</li>
               <li>• Assortment of pictures during and before each lift</li>
-              <li>• Delivery within 3 days</li>
+              <li>• Delivery within 3 days of completion of competition</li>
             </ul>
           </div>
 
@@ -27,7 +27,7 @@ export default function PackagesSection() {
             <ul className="space-y-2 text-lg">
               <li>• 4k Resolution (16:9 or 9:16)</li>
               <li>• Dynamic Videos of all 3 attempts of all 3 lifts</li>
-              <li>• Delivery within 5 days</li>
+              <li>• Delivery within 5 days of completion of competition</li>
             </ul>
           </div>
 
@@ -39,7 +39,7 @@ export default function PackagesSection() {
             <ul className="space-y-2 text-lg">
               <li>• 30-60sec cinematic edit recapping your meet</li>
               <li>• Song of your choice (custom section sync)</li>
-              <li>• Delivery within 10 days</li>
+              <li>• Delivery within 10 days of completion of competition</li>
             </ul>
           </div>
         </div>

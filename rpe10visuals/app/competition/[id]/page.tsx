@@ -126,7 +126,7 @@ export default function CompetitionPage() {
                         e.stopPropagation()
                         handleAdd()
                       }}
-                      className="md:hidden w-full mt-6 bg-[#BEA1F7] text-black py-3 rounded-xl"
+                      className="md:hidden w-full mt-6 bg-[#BEA1F7] text-black py-3 rounded-xl border border-black/40"
                     >
                       ADD TO CART
                     </button>

@@ -146,7 +146,8 @@ export default function CartPage() {
                         <label className="inline-flex items-center gap-2">
                           <input
                             type="radio"
-                            checked={(item.videoFormat ?? '16:9') === '16:9'}
+                            name={`video-format-${item.id}`}
+                            checked={item.videoFormat === '16:9'}
                             onChange={() => updateCartItemData(item.id, { videoFormat: '16:9' })}
                           />
                           <span>16:9 Horizontal</span>
@@ -154,7 +155,8 @@ export default function CartPage() {
                         <label className="inline-flex items-center gap-2">
                           <input
                             type="radio"
-                            checked={(item.videoFormat ?? '16:9') === '9:16'}
+                            name={`video-format-${item.id}`}
+                            checked={item.videoFormat === '9:16'}
                             onChange={() => updateCartItemData(item.id, { videoFormat: '9:16' })}
                           />
                           <span>9:16 Vertical</span>
@@ -171,6 +173,17 @@ export default function CartPage() {
                       onChange={(e) => updateCartItemData(item.id, { songChoice: e.target.value })}
                     />
                   )}
+                  <div className="md:col-span-2 flex items-center gap-2 mt-1">
+                    <input
+                      id={`nowm-${item.id}`}
+                      type="checkbox"
+                      checked={item.noWatermark ?? false}
+                      onChange={(e) => updateCartItemData(item.id, { noWatermark: e.target.checked })}
+                    />
+                    <label htmlFor={`nowm-${item.id}`} className="text-white/80">
+                      Without watermark (₹750)
+                    </label>
+                  </div>
                 </div>
               </div>
             )
@@ -179,6 +192,39 @@ export default function CartPage() {
         <div className="space-y-4">
           <div className="rounded-2xl border border-white/10 p-4 bg-black/20">
             <h2 className="font-semibold mb-3">Checkout</h2>
+            <div className="space-y-2 text-sm mb-4">
+              {cartItems.map((it) => {
+                return (
+                  <div key={`summary-${it.id}`} className="border-b border-white/10 pb-2">
+                    <div className="flex items-center justify-between">
+                      <span>{it.packageName} × 1</span>
+                      <span>₹{it.price}</span>
+                    </div>
+                    {/video/i.test(it.packageName) && it.videoFormat && (
+                      <div className="flex items-center justify-between pl-4 text-white/80">
+                        <span>
+                          {it.videoFormat === '16:9' ? '16:9 Horizontal' : '9:16 Vertical'}
+                        </span>
+                        <span>—</span>
+                      </div>
+                    )}
+                    {it.noWatermark && (
+                      <div className="flex items-center justify-between pl-4 text-white/80">
+                        <span>Exclude watermark × 1</span>
+                        <span>₹750</span>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+              <div className="flex items-center justify-between font-semibold pt-2">
+                <span>Total</span>
+                <span>
+                  ₹
+                  {cartItems.reduce((sum, it) => sum + it.price + (it.noWatermark ? 750 : 0), 0)}
+                </span>
+              </div>
+            </div>
             <button
               onClick={handleCheckout}
               className="w-full inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white/10 border border-white/20"
