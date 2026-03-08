@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import crypto from 'crypto'
-import { getSupabaseClient } from '@/lib/supabase'
+import { createClient } from '@supabase/supabase-js'
 
 export async function POST(req: Request) {
     try {
@@ -33,8 +33,15 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Missing order_id in payload' }, { status: 400 })
         }
 
-        // We need to type Supabase appropriately or use any if not strictly typed
-        const supabase = getSupabaseClient() as any
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+        if (!supabaseUrl || !supabaseServiceKey) {
+            console.error('Missing Supabase credentials for webhook API route')
+            return NextResponse.json({ error: 'Missing database configuration' }, { status: 500 })
+        }
+
+        const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
         switch (payload.event) {
             case 'order.paid': {
