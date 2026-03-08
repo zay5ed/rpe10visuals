@@ -26,28 +26,47 @@ export async function POST(req: Request) {
 
         const payload = JSON.parse(rawBody)
 
-        if (payload.event === 'order.paid') {
-            const razorpayOrderId = payload.payload?.order?.entity?.id || payload.payload?.payment?.entity?.order_id
+        const razorpayOrderId = payload.payload?.order?.entity?.id || payload.payload?.payment?.entity?.order_id
 
-            if (!razorpayOrderId) {
-                console.error('Missing order_id in webhook payload')
-                return NextResponse.json({ error: 'Missing order_id in payload' }, { status: 400 })
+        if (!razorpayOrderId) {
+            console.error('Missing order_id in webhook payload')
+            return NextResponse.json({ error: 'Missing order_id in payload' }, { status: 400 })
+        }
+
+        // We need to type Supabase appropriately or use any if not strictly typed
+        const supabase = getSupabaseClient() as any
+
+        switch (payload.event) {
+            case 'order.paid': {
+                const { error } = await supabase
+                    .from('orders')
+                    .update({ payment_status: 'paid' })
+                    .eq('razorpay_order_id', razorpayOrderId)
+
+                if (error) {
+                    console.error('Supabase update error:', error)
+                    return NextResponse.json({ error: 'Database update failed' }, { status: 500 })
+                }
+
+                console.log(`Successfully updated order ${razorpayOrderId} to paid`)
+                break
             }
+            case 'payment.failed': {
+                const { error } = await supabase
+                    .from('orders')
+                    .update({ payment_status: 'failed' })
+                    .eq('razorpay_order_id', razorpayOrderId)
 
-            // We need to type Supabase appropriately or use any if not strictly typed
-            const supabase = getSupabaseClient() as any
+                if (error) {
+                    console.error('Supabase update error:', error)
+                    return NextResponse.json({ error: 'Database update failed' }, { status: 500 })
+                }
 
-            const { error } = await supabase
-                .from('orders')
-                .update({ payment_status: 'paid' })
-                .eq('razorpay_order_id', razorpayOrderId)
-
-            if (error) {
-                console.error('Supabase update error:', error)
-                return NextResponse.json({ error: 'Database update failed' }, { status: 500 })
+                console.log(`Successfully updated order ${razorpayOrderId} to failed`)
+                break
             }
-
-            console.log(`Successfully updated order ${razorpayOrderId} to paid`)
+            default:
+                console.log(`Unhandled event type: ${payload.event}`)
         }
 
         return NextResponse.json({ status: 'ok' })
