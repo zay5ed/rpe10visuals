@@ -44,18 +44,22 @@ export async function POST(req: Request) {
         const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
         switch (payload.event) {
+            case 'payment.captured':
             case 'order.paid': {
+                // Ensure we use the proper order ID based on the event structure
+                const actualOrderId = payload.payload?.payment?.entity?.order_id || razorpayOrderId
+
                 const { error } = await supabase
                     .from('orders')
                     .update({ payment_status: 'paid' })
-                    .eq('razorpay_order_id', razorpayOrderId)
+                    .eq('razorpay_order_id', actualOrderId)
 
                 if (error) {
                     console.error('Supabase update error:', error)
                     return NextResponse.json({ error: 'Database update failed' }, { status: 500 })
                 }
 
-                console.log(`Successfully updated order ${razorpayOrderId} to paid`)
+                console.log(`Successfully updated order ${actualOrderId} to paid from event ${payload.event}`)
                 break
             }
             case 'payment.failed': {
