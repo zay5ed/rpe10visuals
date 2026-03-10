@@ -39,7 +39,7 @@ export default function CompetitionPage() {
       if (typeof window !== 'undefined') {
         localStorage.setItem('rpe10_last_competition', String(id))
       }
-    } catch {}
+    } catch { }
   }, [id])
 
   function handleAdd() {
@@ -48,7 +48,7 @@ export default function CompetitionPage() {
       if (typeof window !== 'undefined') {
         localStorage.setItem('rpe10_last_competition', String(id))
       }
-    } catch {}
+    } catch { }
     setLastAdded({ ...selected })
     addToCart({
       id: `${id}-${selected.key}-${Date.now()}`,

@@ -13,6 +13,7 @@ export type CartItem = {
   email?: string
   videoFormat?: '16:9' | '9:16'
   songChoice?: string
+  hypeOverlay?: string
   exclude_watermark?: boolean
 }
 
@@ -39,7 +40,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       localStorage.setItem('rpe10_cart', JSON.stringify(cartItems))
-    } catch {}
+    } catch { }
   }, [cartItems])
 
   const addToCart = (item: CartItem) => {

@@ -58,6 +58,7 @@ export default function CartPage() {
       if (!it.email) missing.push(`${it.packageName}: Email`)
       if (isVideo && !it.videoFormat) missing.push(`${it.packageName}: Video Format`)
       if (isHype && !it.songChoice) missing.push(`${it.packageName}: Song Choice & Timestamp`)
+      if (isHype && !it.hypeOverlay) missing.push(`${it.packageName}: Text Overlay Option`)
     }
     if (missing.length > 0) {
       alert(`Please complete required fields:\n\n- ${missing.join('\n- ')}`)
@@ -73,7 +74,22 @@ export default function CartPage() {
         return
       }
 
-      const tempGroup = `temp_${Date.now()}_${Math.floor(Math.random() * 1000)}`
+      const totalAmount = cartItems.reduce((sum, it) => sum + it.price + (it.exclude_watermark ? 750 : 0), 0) * 100
+      const res = await fetch('/api/razorpay/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: totalAmount })
+      })
+
+      if (!res.ok) {
+        alert('Failed to initialize payment')
+        setSubmitting(false)
+        return
+      }
+
+      const orderData = await res.json()
+      const realRazorpayOrderId = orderData.id
+
       const supabaseClient: any = getSupabaseClient()
 
       const rows = cartItems.map((it) => ({
@@ -87,9 +103,10 @@ export default function CartPage() {
         email: it.email ?? '',
         video_format: it.videoFormat ?? null,
         song_choice: it.songChoice ?? null,
+        hype_edit_overlay: it.hypeOverlay ?? null,
         exclude_watermark: it.exclude_watermark ?? false,
         payment_status: 'unpaid',
-        razorpay_order_id: tempGroup,
+        razorpay_order_id: realRazorpayOrderId,
       }))
 
       const { error } = await supabaseClient.from('orders').insert(rows)
@@ -99,23 +116,6 @@ export default function CartPage() {
         setSubmitting(false)
         return
       }
-
-      const totalAmount = cartItems.reduce((sum, it) => sum + it.price + (it.exclude_watermark ? 750 : 0), 0) * 100
-      const res = await fetch('/api/razorpay/order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: totalAmount, receipt: tempGroup })
-      })
-
-      if (!res.ok) {
-        alert('Failed to initialize payment')
-        setSubmitting(false)
-        return
-      }
-
-      const orderData = await res.json()
-
-      await supabaseClient.from('orders').update({ razorpay_order_id: orderData.id }).eq('razorpay_order_id', tempGroup)
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
@@ -243,13 +243,42 @@ export default function CartPage() {
                     </div>
                   )}
                   {isHype && (
-                    <textarea
-                      className="md:col-span-2 w-full rounded-xl bg-black/30 border border-white/10 px-3 py-2 text-white placeholder-white/50"
-                      placeholder="Song Choice & Timestamp"
-                      rows={4}
-                      value={item.songChoice ?? ''}
-                      onChange={(e) => updateCartItemData(item.id, { songChoice: e.target.value })}
-                    />
+                    <>
+                      <textarea
+                        className="md:col-span-2 w-full rounded-xl bg-black/30 border border-white/10 px-3 py-2 text-white placeholder-white/50"
+                        placeholder="Song Choice & Timestamp"
+                        rows={4}
+                        value={item.songChoice ?? ''}
+                        onChange={(e) => updateCartItemData(item.id, { songChoice: e.target.value })}
+                      />
+                      <div className="md:col-span-2 mt-2">
+                        <div className="mb-2 text-white/80">Select Text Overlay Option (Required)</div>
+                        <div className="flex flex-col gap-2">
+                          <label className="inline-flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name={`hype-overlay-${item.id}`}
+                              checked={item.hypeOverlay === 'Add text overlay of weights'}
+                              onChange={() =>
+                                updateCartItemData(item.id, { hypeOverlay: 'Add text overlay of weights' })
+                              }
+                            />
+                            <span>Add text overlay of weights</span>
+                          </label>
+                          <label className="inline-flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name={`hype-overlay-${item.id}`}
+                              checked={item.hypeOverlay === 'Do not add any text overlay'}
+                              onChange={() =>
+                                updateCartItemData(item.id, { hypeOverlay: 'Do not add any text overlay' })
+                              }
+                            />
+                            <span>Do not add any text overlay</span>
+                          </label>
+                        </div>
+                      </div>
+                    </>
                   )}
                   <div className="md:col-span-2 flex items-center gap-2 mt-1">
                     <input
@@ -283,6 +312,12 @@ export default function CartPage() {
                         <span>
                           {it.videoFormat === '16:9' ? '16:9 Horizontal' : '9:16 Vertical'}
                         </span>
+                        <span>—</span>
+                      </div>
+                    )}
+                    {/hype/i.test(it.packageName) && it.hypeOverlay && (
+                      <div className="flex items-center justify-between pl-4 text-white/80">
+                        <span>- {it.hypeOverlay} -</span>
                         <span>—</span>
                       </div>
                     )}
