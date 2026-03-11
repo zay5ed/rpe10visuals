@@ -121,15 +121,17 @@ export default function CompetitionPage() {
                     )}
                   </ul>
                   {active && (
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.95 }}
                       onClick={(e) => {
                         e.stopPropagation()
                         handleAdd()
                       }}
-                      className="md:hidden w-full mt-6 bg-[#BEA1F7] text-black py-3 rounded-xl border border-black/40"
+                      className="md:hidden w-full mt-6 bg-[#BEA1F7] text-black py-3 rounded-xl border border-black/40 font-semibold shadow-sm hover:shadow-md transition-shadow active:bg-[#BEA1F7]/80"
                     >
                       ADD TO CART
-                    </button>
+                    </motion.button>
                   )}
                 </div>
               )

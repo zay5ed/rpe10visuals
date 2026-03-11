@@ -58,7 +58,7 @@ export default function CartPage() {
       if (!it.email) missing.push(`${it.packageName}: Email`)
       if (isVideo && !it.videoFormat) missing.push(`${it.packageName}: Video Format`)
       if (isHype && !it.songChoice) missing.push(`${it.packageName}: Song Choice & Timestamp`)
-      if (isHype && !it.hypeOverlay) missing.push(`${it.packageName}: Text Overlay Option`)
+      if (isHype && !it.hypeOverlay) missing.push(`${it.packageName}: Text Overlay Option`) //aws push
     }
     if (missing.length > 0) {
       alert(`Please complete required fields:\n\n- ${missing.join('\n- ')}`)
