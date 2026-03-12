@@ -56,7 +56,7 @@ export default function Home() {
                   />
                 </div>
                 <p className="text-lg leading-relaxed text-zinc-800 max-w-lg">
-                  We document the work and the wins. 
+                  We document the work and the wins.
                   When the bar stalls and you don&apos;t.
                   The breath before the lift. The fight through it.
                   This isn&apos;t just content.

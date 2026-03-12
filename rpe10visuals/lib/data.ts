@@ -41,6 +41,6 @@ export const EVENTS: EventItem[] = [
     desc: 'National Classic & Equipped Bench Press Championship 2027',
     location: '📍New Delhi, Delhi'
   }
-  
- 
+
+
 ]

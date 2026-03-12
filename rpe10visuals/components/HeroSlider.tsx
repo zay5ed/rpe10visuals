@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { EVENTS } from '@/lib/data'
 
 // removed unused local type
@@ -10,6 +10,7 @@ import { EVENTS } from '@/lib/data'
 export default function HeroSlider() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState<1 | -1>(1)
+  const router = useRouter()
 
   const n = EVENTS.length
   const SPRING = { type: 'spring', stiffness: 300, damping: 30 } as const
@@ -67,6 +68,9 @@ export default function HeroSlider() {
           </div>
 
           <div className="relative h-[60vh] min-h-[420px] sm:h-[64vh] md:h-[72vh] md:min-h-[520px] flex items-center justify-center">
+            <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-full text-center z-10">
+              <p className="text-sm text-white/50 tracking-wide">Note: Click Active events to explore packages</p>
+            </div>
             <div className="relative w-[14rem] sm:w-[16rem] md:w-[18rem] aspect-[9/16]">
               <div className="absolute inset-0" style={{ zIndex: spread[2].z }}>
                 <motion.div
@@ -93,14 +97,14 @@ export default function HeroSlider() {
                 </motion.div>
               </div>
               <div className="absolute inset-0" style={{ zIndex: spread[0].z }}>
-                <AnimatePresence mode="wait" initial={false}>
+                <AnimatePresence initial={false}>
                   <motion.div
                     key={active.id}
                     className="absolute inset-0 rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_32px_rgba(255,255,255,0.08)]"
-                    initial={{ x: direction === 1 ? 60 : -60, opacity: 0, scale: 0.98 }}
+                    initial={{ x: direction === 1 ? 100 : -100, opacity: 0, scale: 0.95 }}
                     animate={{ x: 0, opacity: 1, scale: 1 }}
-                    exit={{ x: direction === 1 ? -80 : 80, opacity: 0, scale: 0.98 }}
-                    transition={SPRING}
+                    exit={{ x: direction === 1 ? -120 : 120, opacity: 0, scale: 0.95 }}
+                    transition={{ ...SPRING, duration: 0.5 }}
                     drag="x"
                     dragElastic={0.2}
                     dragConstraints={{ left: 0, right: 0 }}
@@ -110,12 +114,20 @@ export default function HeroSlider() {
                     }}
                   >
                     {active.isActive ? (
-                      <Link href={`/competition/${active.id}`} className="block h-full w-full cursor-pointer">
+                      <div
+                        onClick={() => router.push(`/competition/${active.id}`)}
+                        className="block h-full w-full cursor-pointer relative group"
+                      >
                         <div
-                          className="h-full w-full bg-cover bg-center"
+                          className="h-full w-full bg-cover bg-center transition-all duration-300 group-hover:brightness-110 group-hover:scale-105"
                           style={{ backgroundImage: `url(${active.image})` }}
                         />
-                      </Link>
+                        <div className="absolute inset-x-0 bottom-16 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <button className="px-5 py-2 rounded-xl bg-black text-white font-medium text-sm hover:bg-neutral-900 transition-all duration-200 hover:scale-[1.02]">
+                            Explore Packages
+                          </button>
+                        </div>
+                      </div>
                     ) : (
                       <div
                         className="h-full w-full bg-cover bg-center cursor-default"
