@@ -11,15 +11,16 @@ import { useIsMounted } from '@/lib/useIsMounted'
 import { ArrowLeft } from 'lucide-react'
 
 type PackageOption = {
-  key: 'p1' | 'p2' | 'p3'
+  key: 'p1' | 'p2' | 'p3' | 'p4'
   name: string
   price: number
 }
 
 const PACKAGES: PackageOption[] = [
-  { key: 'p1', name: 'Photo Package', price: 2000 },
-  { key: 'p2', name: 'Video Package', price: 2500 },
-  { key: 'p3', name: 'Hype Package', price: 3500 },
+  { key: 'p1', name: 'Photo Package', price: 1 },
+  { key: 'p2', name: 'Video Package', price: 2499 },
+  { key: 'p3', name: 'Hype Package', price: 3499 },
+  { key: 'p4', name: 'The Complete RPE10 Bundle', price: 4499 },
 ]
 
 const SPRING = { type: 'spring', stiffness: 300, damping: 30 } as const
@@ -83,7 +84,7 @@ export default function CompetitionPage() {
         <div className="mt-24">
           <h1 className="display uppercase text-5xl font-bold mb-3">{compName}</h1>
           <h2 className="text-[#BEA1F7] mb-6 uppercase">Select a Package</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
             {PACKAGES.map((pkg) => {
               const active = selected?.key === pkg.key
               return (
@@ -117,6 +118,14 @@ export default function CompetitionPage() {
                         <li>• Custom song sync</li>
                         <li>• 10-day delivery</li>
                         <li>• 2 Revisions included</li>
+                      </>
+                    )}
+                    {pkg.key === 'p4' && (
+                      <>
+                        <li>• 12 High-Res Pictures w/ Professional color grading</li>
+                        <li>• 4k Dynamic Lift Videos (all attempts)</li>
+                        <li>• 30-60sec Cinematic Hype Edit w/ custom song sync (includes 2 revisions)</li>
+                        <li>• Basically an all in one package consisting the photos,videos and hype edit</li>
                       </>
                     )}
                   </ul>

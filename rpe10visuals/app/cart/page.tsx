@@ -50,15 +50,15 @@ export default function CartPage() {
     if (cartItems.length === 0) return
     const missing: string[] = []
     for (const it of cartItems) {
-      const isVideo = /video/i.test(it.packageName)
-      const isHype = /hype/i.test(it.packageName)
+      const needsVideoOptions = /video|all-in-one|bundle/i.test(it.packageName)
+      const needsHypeOptions = /hype|all-in-one|bundle/i.test(it.packageName)
       if (!it.lifterName) missing.push(`${it.packageName}: Lifter Name`)
       if (!it.weightClass) missing.push(`${it.packageName}: Weight Class / Lot Number`)
       if (!it.phone) missing.push(`${it.packageName}: Phone Number`)
       if (!it.email) missing.push(`${it.packageName}: Email`)
-      if (isVideo && !it.videoFormat) missing.push(`${it.packageName}: Video Format`)
-      if (isHype && !it.songChoice) missing.push(`${it.packageName}: Song Choice & Timestamp`)
-      if (isHype && !it.hypeOverlay) missing.push(`${it.packageName}: Text Overlay Option`) //aws push
+      if (needsVideoOptions && !it.videoFormat) missing.push(`${it.packageName}: Video Format`)
+      if (needsHypeOptions && !it.songChoice) missing.push(`${it.packageName}: Song Choice & Timestamp`)
+      if (needsHypeOptions && !it.hypeOverlay) missing.push(`${it.packageName}: Text Overlay Option`) //aws push
     }
     if (missing.length > 0) {
       alert(`Please complete required fields:\n\n- ${missing.join('\n- ')}`)
@@ -174,8 +174,8 @@ export default function CartPage() {
         <div className="lg:col-span-2 space-y-4">
           {cartItems.length === 0 && <div className="text-white/70">Your cart is empty.</div>}
           {cartItems.map((item) => {
-            const isVideo = /video/i.test(item.packageName)
-            const isHype = /hype/i.test(item.packageName)
+            const needsVideoOptions = /video|all-in-one|bundle/i.test(item.packageName)
+            const needsHypeOptions = /hype|all-in-one|bundle/i.test(item.packageName)
             return (
               <div key={item.id} className="rounded-2xl border border-white/10 p-4 bg-black/20">
                 <div className="flex items-center justify-between">
@@ -217,9 +217,9 @@ export default function CartPage() {
                     value={item.email ?? ''}
                     onChange={(e) => updateCartItemData(item.id, { email: e.target.value })}
                   />
-                  {isVideo && (
+                  {needsVideoOptions && (
                     <div className="md:col-span-2">
-                      <div className="mb-2 text-white/80">Select Video Format</div>
+                      <div className="mb-2 text-white/80">Select Video Format (Required)</div>
                       <div className="flex items-center gap-4">
                         <label className="inline-flex items-center gap-2">
                           <input
@@ -242,7 +242,7 @@ export default function CartPage() {
                       </div>
                     </div>
                   )}
-                  {isHype && (
+                  {needsHypeOptions && (
                     <>
                       <textarea
                         className="md:col-span-2 w-full rounded-xl bg-black/30 border border-white/10 px-3 py-2 text-white placeholder-white/50"
@@ -307,7 +307,7 @@ export default function CartPage() {
                       <span>{it.packageName} × 1</span>
                       <span>₹{it.price}</span>
                     </div>
-                    {/video/i.test(it.packageName) && it.videoFormat && (
+                    {/video|all-in-one|bundle/i.test(it.packageName) && it.videoFormat && (
                       <div className="flex items-center justify-between pl-4 text-white/80">
                         <span>
                           {it.videoFormat === '16:9' ? '16:9 Horizontal' : '9:16 Vertical'}
@@ -315,7 +315,7 @@ export default function CartPage() {
                         <span>—</span>
                       </div>
                     )}
-                    {/hype/i.test(it.packageName) && it.hypeOverlay && (
+                    {/hype|all-in-one|bundle/i.test(it.packageName) && it.hypeOverlay && (
                       <div className="flex items-center justify-between pl-4 text-white/80">
                         <span>- {it.hypeOverlay} -</span>
                         <span>—</span>
