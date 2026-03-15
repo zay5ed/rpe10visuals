@@ -8,12 +8,18 @@ export default function ContactSection() {
         <h2 className="text-5xl font-bold display mb-10 text-center text-[#BEA1F7]">CONTACT US</h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="space-y-3">
-            <p className="text-white/80">rpe10visuals@gmail.com</p>
+            <p className="text-white/80">contact@rpe10visuals.in</p>
             <p className="text-white/80">+91 6366 031466</p>
             <p className="text-white/80">Copyrights registered</p>
           </div>
           <div className="flex items-center justify-center gap-6">
-            <a href="#" aria-label="Instagram" className="h-14 w-14 rounded-2xl bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center text-[#BEA1F7] hover:bg-black/40">
+            <a
+              href="https://www.instagram.com/rpe10visuals"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="h-14 w-14 rounded-2xl bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center text-[#BEA1F7] hover:bg-black/40 hover:opacity-80 hover:scale-110 transition-all duration-300"
+            >
               <Instagram />
             </a>
             <a href="#" aria-label="Twitter" className="h-14 w-14 rounded-2xl bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center text-[#BEA1F7] hover:bg-black/40">
