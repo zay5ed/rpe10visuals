@@ -9,18 +9,20 @@ import { EVENTS } from '@/lib/data'
 import Navbar from '@/components/Navbar'
 import { useIsMounted } from '@/lib/useIsMounted'
 import { ArrowLeft } from 'lucide-react'
+import CountdownTimer from '@/components/CountdownTimer'
 
 type PackageOption = {
   key: 'p1' | 'p2' | 'p3' | 'p4'
   name: string
   price: number
+  originalPrice: number
 }
 
 const PACKAGES: PackageOption[] = [
-  { key: 'p1', name: 'Photo Package', price: 1999 },
-  { key: 'p2', name: 'Video Package', price: 2499 },
-  { key: 'p3', name: 'Hype Package', price: 3499 },
-  { key: 'p4', name: 'The Complete RPE10 Bundle', price: 4499 },
+  { key: 'p1', name: 'Photo Package', originalPrice: 1999, price: 1699 },
+  { key: 'p2', name: 'Video Package', originalPrice: 2499, price: 2099 },
+  { key: 'p3', name: 'Hype Package', originalPrice: 3499, price: 2999 },
+  { key: 'p4', name: 'The Complete RPE10 Bundle', originalPrice: 4499, price: 3799 },
 ]
 
 const SPRING = { type: 'spring', stiffness: 300, damping: 30 } as const
@@ -56,6 +58,7 @@ export default function CompetitionPage() {
       compName,
       packageName: selected.name,
       price: selected.price,
+      originalPrice: selected.originalPrice,
       image: event.image
     })
     setToastOpen(true)
@@ -84,6 +87,7 @@ export default function CompetitionPage() {
         <div className="mt-24">
           <h1 className="display uppercase text-5xl font-bold mb-3">{compName}</h1>
           <h2 className="text-[#BEA1F7] mb-6 uppercase">Select a Package</h2>
+          <CountdownTimer />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
             {PACKAGES.map((pkg) => {
               const active = selected?.key === pkg.key
@@ -91,11 +95,15 @@ export default function CompetitionPage() {
                 <div
                   key={pkg.key}
                   onClick={() => setSelected(pkg)}
-                  className={`rounded-2xl px-5 py-7 min-h-min md:min-h-[320px] text-left border-2 border-[#BEA1F7] flex flex-col justify-between ${active ? 'bg-[#BEA1F7] text-black' : 'bg-transparent text-white'} transition-colors`}
+                  className={`rounded-2xl px-5 py-7 min-h-min md:min-h-[320px] text-left border-2 flex flex-col justify-between ${active ? 'bg-[#BEA1F7] text-black border-[#BEA1F7]' : 'bg-transparent text-white border-white/20 hover:border-[#BEA1F7]/50'} transition-colors`}
                   role="button"
                 >
-                  <div className="text-xl font-bold">{pkg.name} (₹{pkg.price})</div>
-                  <ul className={`mt-4 md:mt-8 space-y-2 ${active ? 'text-black/80' : 'text-white/70'}`}>
+                  <div className="text-xl font-bold mb-2">{pkg.name}</div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className={`line-through text-sm ${active ? 'text-black/50' : 'text-white/50'}`}>₹{pkg.originalPrice}</span>
+                    <span className="text-green-500 font-extrabold text-xl">₹{pkg.price}</span>
+                  </div>
+                  <ul className={`mt-2 md:mt-4 space-y-2 ${active ? 'text-black/80' : 'text-white/70'}`}>
                     {pkg.key === 'p1' && (
                       <>
                         <li>• 12 High-Res Pictures</li>

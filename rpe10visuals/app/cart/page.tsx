@@ -6,6 +6,7 @@ import { useIsMounted } from '@/lib/useIsMounted'
 import Navbar from '@/components/Navbar'
 import { useRouter } from 'next/navigation'
 import { getSupabaseClient } from '@/lib/supabase'
+import CountdownTimer from '@/components/CountdownTimer'
 
 function loadRazorpay() {
   return new Promise((resolve) => {
@@ -182,7 +183,10 @@ export default function CartPage() {
                   <div>
                     <div className="font-semibold">{item.compName}</div>
                     <div className="text-white/70 text-sm">{item.packageName}</div>
-                    <div className="text-white/90">₹{item.price}</div>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="line-through text-white/50 text-xs">₹{item.originalPrice || item.price}</span>
+                      <span className="text-green-500 font-bold text-sm">₹{item.price}</span>
+                    </div>
                   </div>
                   <button
                     className="inline-flex items-center justify-center h-10 w-10 rounded-xl bg-black/30 border border-white/10"
@@ -297,6 +301,7 @@ export default function CartPage() {
           })}
         </div>
         <div className="space-y-4">
+          <CountdownTimer />
           <div className="rounded-2xl border border-white/10 p-4 bg-black/20">
             <h2 className="font-semibold mb-3">Checkout</h2>
             <div className="space-y-2 text-sm mb-4">
@@ -305,7 +310,10 @@ export default function CartPage() {
                   <div key={`summary-${it.id}`} className="border-b border-white/10 pb-2">
                     <div className="flex items-center justify-between">
                       <span>{it.packageName} × 1</span>
-                      <span>₹{it.price}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="line-through text-white/50 text-xs">₹{it.originalPrice || it.price}</span>
+                        <span className="text-green-500 font-bold">₹{it.price}</span>
+                      </div>
                     </div>
                     {/video|all-in-one|bundle/i.test(it.packageName) && it.videoFormat && (
                       <div className="flex items-center justify-between pl-4 text-white/80">

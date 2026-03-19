@@ -6,6 +6,7 @@ export type CartItem = {
   compName: string
   packageName: string
   price: number
+  originalPrice?: number
   image?: string
   lifterName?: string
   weightClass?: string
