@@ -13,13 +13,13 @@ export type EventItem = {
 export const EVENTS: EventItem[] = [
   {
     id: 'e1',
-    name: 'Powerlifting India Open Nationals 2026',
-    date: 'MARCH 24TH to 28TH, 2026',
+    name: 'National Masters (Men and Women) 2026',
+    date: 'JULY 18TH to JULY 23RD, 2026',
     status: 'active',
     isActive: true,
     image: '/PION_2026-1.jpeg',
-    desc: 'National Senior Classic Powerlifting Championship 2026',
-    location: '📍Mangalore, Karnataka'
+    desc: 'Equipped and Classic Powerlifting Championship 2026',
+    location: '📍Garkheda Stadium, Maharashtra'
   },
   {
     id: 'e3',

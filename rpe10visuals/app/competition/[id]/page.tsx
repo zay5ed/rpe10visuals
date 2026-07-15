@@ -17,10 +17,10 @@ type PackageOption = {
 }
 
 const PACKAGES: PackageOption[] = [
-  { key: 'p1', name: 'Photo Package', price: 1999 },
-  { key: 'p2', name: 'Video Package', price: 2499 },
-  { key: 'p3', name: 'Hype Package', price: 3499 },
-  { key: 'p4', name: 'The Complete RPE10 Bundle', price: 4499 },
+  { key: 'p1', name: 'Photo Package', price: 2499 },
+  { key: 'p2', name: 'Video Package', price: 3199 },
+  { key: 'p3', name: 'Hype Package', price: 3999 },
+  { key: 'p4', name: 'The Complete RPE10 Bundle', price: 5299 },
 ]
 
 const SPRING = { type: 'spring', stiffness: 300, damping: 30 } as const
