@@ -17,7 +17,7 @@ export const EVENTS: EventItem[] = [
     date: 'JULY 18TH to JULY 23RD, 2026',
     status: 'active',
     isActive: true,
-    image: '/PION_2026-1.jpeg',
+    image: '/PILN_26.jpeg',
     desc: 'Equipped and Classic Powerlifting Championship 2026',
     location: '📍Garkheda Stadium, Maharashtra'
   },
